@@ -1,0 +1,39 @@
+<div class="comments-container">
+  <span class="comment-title">Comments</span>
+  <ul>
+    <li class="comment-list-item" *ngFor="let comment of comments">
+        <div class="comment">
+            <span class="comment-text" [innerHTML]="comment.text"></span>
+            <span class="comment-data">{{ comment.author }} • {{ comment.date | date: 'medium' }}</span>
+        </div>
+    </li>
+  </ul>
+ 
+ 
+  <div class="new-comment">
+    <textarea 
+    [(ngModel)]="newCommentContent" 
+    (input)="onTextChange()"
+    (keydown)="onInputChange($event)"
+    rows="4" 
+    placeholder="Type your comment here. Type '@' to tag a team member in this comment."
+    ></textarea>
+    
+    <!-- Show the Mention Dropdown if '@' has been seen-->
+    <div class="mention-dropdown-container" *ngIf="mentionSeen && mentionList.length > 0">
+        <ul class="mention-dropdown">
+          <li
+            class="mention-item"
+            *ngFor="let user of mentionList; let i = index"
+            (click)="mentionIndex = i; selectMention($event)"
+            [class.selected]="isSelected(i)"
+          >
+            {{ user }}
+          </li>
+        </ul>
+      </div>
+  </div>
+  <div class="add-button-container">
+    <button class="add-comment-btn" (click)="addComment()">Submit Comment</button>
+  </div>
+</div>
